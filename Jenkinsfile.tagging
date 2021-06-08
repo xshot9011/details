@@ -44,7 +44,7 @@ spec:
                 container('docker') {
                     script {
                         docker.withRegistry('', 'registry-bookinfo') {
-                            uatImage = docker.image('bigdev2000/productpage:uat')
+                            uatImage = docker.image('bigdev2000/details:uat')
                             uatImage.pull()  // shouldn't rebuild image
                             uatImage.push('build-${BUILD_NUMBER}')
                         }

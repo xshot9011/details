@@ -39,7 +39,7 @@ spec:
                     script {
                         scmVars = git branch: "${BRANCH_NAME}",
                                       credentialsId: 'bookinfo-git-deploy-key',
-                                      url: 'git@gitlab.com:workshop35/bookinfo/productpage.git'
+                                      url: 'git@gitlab.com:workshop35/bookinfo/details.git'
                     }
                 }
             }
@@ -50,7 +50,7 @@ spec:
                 container('docker') {
                     script {
                         docker.withRegistry('', 'registry-bookinfo') {
-                            docker.build('bigdev2000/productpage:${ENV_NAME}').push()
+                            docker.build('bigdev2000/details:${ENV_NAME}').push()
                         }
                     }
                 }
@@ -62,9 +62,9 @@ spec:
                 container('helm') {
                     script {
 						withKubeConfig([credentialsId: 'gke-opsta-cluster-sa-secret-file']) {
-							sh "helm upgrade -f k8s/helm-values/values-bookinfo-${ENV_NAME}-productpage.yaml --wait \
+							sh "helm upgrade -f k8s/helm-values/values-bookinfo-${ENV_NAME}-details.yaml --wait \
                                  --set extraEnv.COMMIT_ID=${scmVars.GIT_COMMIT} \
-                                 --namespace opsta-${ENV_NAME} bookinfo-${ENV_NAME}-ratings k8s/helm/ \
+                                 --namespace opsta-${ENV_NAME} bookinfo-${ENV_NAME}-details k8s/helm/ \
                                  --install"
 						}
                     }
