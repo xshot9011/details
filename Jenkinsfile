@@ -23,16 +23,6 @@ spec:
     command:
     - cat
     tty: true
-  - name: java-node
-    image: timbru31/java-node:11-alpine-jre-14
-    command:
-    - cat
-    tty: true
-    securityContext:
-        privileged: true
-    volumeMounts:
-    - mountPath: '/home/jenkins/dependency-check-data'
-      name: dependency-check-data
   - name: skan
     image: alcide/skan:v0.9.0-debug
     command:
@@ -43,6 +33,11 @@ spec:
     command:
     - cat
     tty: true
+    securityContext:
+        privileged: true
+    volumeMounts:
+    - mountPath: '/home/jenkins/dependency-check-data'
+      name: dependency-check-data
   volumes:
   - name: dependency-check-data
     hostPath:
@@ -94,7 +89,7 @@ spec:
 
         stage('Sonarqube Scanner') {
             steps {
-                container('java-node') {
+                container('jruby') {
                     script {
                         withSonarQubeEnv('sonarqube-server') {
                             sh '''${SCANNER_HOME}/bin/sonar-scanner \
